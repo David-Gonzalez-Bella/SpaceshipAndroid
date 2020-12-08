@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import dadm.scaffold.space.SpaceShipPlayer;
+
 public class FramesPerSecondCounter extends GameObject {
 
     private final float textWidth;
@@ -41,11 +43,23 @@ public class FramesPerSecondCounter extends GameObject {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) { //This method will draw all UI texts (FPS, lifes, score, ...)
+        //FPS black box
         paint.setColor(Color.BLACK);
         canvas.drawRect(0, (int) (canvas.getHeight() - textHeight), textWidth, canvas.getHeight(), paint);
+
+        //FPS
         paint.setColor(Color.WHITE);
         canvas.drawText(framesPerSecondText, textWidth / 2, (int) (canvas.getHeight() - textHeight / 2), paint);
+
+        //Score
+        paint.setColor(Color.WHITE);
+        canvas.drawText("Score:   " + SpaceShipPlayer.score, textWidth, textHeight, paint);
+
+        //Lifes
+        paint.setColor(Color.WHITE);
+        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 3, textHeight, paint);
+
         draws++;
     }
 }

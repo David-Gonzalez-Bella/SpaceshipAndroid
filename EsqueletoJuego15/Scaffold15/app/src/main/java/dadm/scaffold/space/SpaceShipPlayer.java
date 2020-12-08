@@ -27,8 +27,8 @@ public class SpaceShipPlayer extends Sprite {
     private int maxY;
     private double speedFactor;
 
-
-    private int lifes = 3;
+    public static int score = 0;
+    public static int lifes = 3;
 
 
     public SpaceShipPlayer(GameEngine gameEngine){
@@ -107,13 +107,16 @@ public class SpaceShipPlayer extends Sprite {
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
         if (otherObject instanceof Asteroid) {
-            gameEngine.removeGameObject(this);
-            //gameEngine.stopGame();
-            Asteroid a = (Asteroid) otherObject;
-            a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+            gameEngine.removeGameObject(otherObject);
+            ((Asteroid) otherObject).gameController.returnToPool((Asteroid) otherObject);
             lifes--;
-
+            if(lifes <= 0) {
+                gameEngine.removeGameObject(this);
+                gameEngine.stopGame();
+                Asteroid a = (Asteroid) otherObject;
+                a.removeObject(gameEngine);
+                gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+            }
         }
     }
 }

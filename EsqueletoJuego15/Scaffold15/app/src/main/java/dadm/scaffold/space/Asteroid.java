@@ -7,7 +7,7 @@ import dadm.scaffold.engine.Sprite;
 
 public class Asteroid extends Sprite {
 
-    private final GameController gameController;
+    public final GameController gameController;
 
     private double speed;
     private double speedX;

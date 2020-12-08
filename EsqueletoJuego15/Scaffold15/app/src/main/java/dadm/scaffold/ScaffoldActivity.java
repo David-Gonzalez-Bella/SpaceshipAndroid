@@ -9,6 +9,7 @@ import android.view.View;
 import dadm.scaffold.counter.GameFragment;
 import dadm.scaffold.counter.MainMenuFragment;
 import dadm.scaffold.sound.SoundManager;
+import dadm.scaffold.space.SpaceShipPlayer;
 
 public class ScaffoldActivity extends AppCompatActivity {
 
@@ -35,6 +36,8 @@ public class ScaffoldActivity extends AppCompatActivity {
 
     public void startGame() {
         // Navigate the the game fragment, which makes the start automatically
+        SpaceShipPlayer.score = 0; //Whenever we start a game we reset the score and lifes
+        SpaceShipPlayer.lifes = 3;
         navigateToFragment( new GameFragment());
     }
 

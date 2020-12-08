@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -40,11 +41,11 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.btn_play_pause).setOnClickListener(this);
-        lifesText= view.findViewById(R.id.lifesText);
+        //lifesText= view.findViewById(R.id.lifesText);
         final ViewTreeObserver observer = view.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onGlobalLayout(){
+            public void onGlobalLayout() {
                 //Para evitar que sea llamado múltiples veces,
                 //se elimina el listener en cuanto es llamado
                 observer.removeOnGlobalLayoutListener(this);
@@ -70,7 +71,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-        if (theGameEngine.isRunning()){
+        if (theGameEngine.isRunning()) {
             pauseGameAndShowPauseDialog();
         }
     }
@@ -93,7 +94,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
     private void pauseGameAndShowPauseDialog() {
         theGameEngine.pauseGame();
         new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.pause_dialog_title)
                 .setMessage(R.string.pause_dialog_message)
                 .setPositiveButton(R.string.resume, new DialogInterface.OnClickListener() {
                     @Override
@@ -107,7 +107,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         theGameEngine.stopGame();
-                        ((ScaffoldActivity)getActivity()).navigateBack();
+                        ((ScaffoldActivity) getActivity()).navigateBack();
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -126,8 +126,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         if (theGameEngine.isPaused()) {
             theGameEngine.resumeGame();
             button.setText(R.string.pause);
-        }
-        else {
+        } else {
             theGameEngine.pauseGame();
             button.setText(R.string.resume);
         }
