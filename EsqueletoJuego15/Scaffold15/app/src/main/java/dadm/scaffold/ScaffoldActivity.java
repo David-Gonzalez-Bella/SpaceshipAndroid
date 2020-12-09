@@ -1,5 +1,7 @@
 package dadm.scaffold;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -34,14 +36,15 @@ public class ScaffoldActivity extends AppCompatActivity {
         return soundManager;
     }
 
-    public void startGame() {
+    public void startGame(int shipSkin) {
         // Navigate the the game fragment, which makes the start automatically
         SpaceShipPlayer.score = 0; //Whenever we start a game we reset the score and lifes
+        SpaceShipPlayer.stars = 0;
         SpaceShipPlayer.lifes = 3;
-        navigateToFragment( new GameFragment());
+        navigateToFragment(new GameFragment(shipSkin));
     }
 
-    private void navigateToFragment(BaseFragment dst) {
+    public void navigateToFragment(BaseFragment dst) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, dst, TAG_FRAGMENT)

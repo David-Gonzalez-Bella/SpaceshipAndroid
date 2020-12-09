@@ -1,8 +1,10 @@
 package dadm.scaffold.counter;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +26,14 @@ import dadm.scaffold.space.SpaceShipPlayer;
 
 public class GameFragment extends BaseFragment implements View.OnClickListener {
     private GameEngine theGameEngine;
-
-    public TextView lifesText;
+    private int shipInGameSkin;
 
     public GameFragment() {
+    }
+
+    @SuppressLint("ValidFragment")
+    public GameFragment(int shipSkin){
+        shipInGameSkin = shipSkin;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 theGameEngine = new GameEngine(getActivity(), gameView);
                 theGameEngine.setSoundManager(getScaffoldActivity().getSoundManager());
                 theGameEngine.setTheInputController(new JoystickInputController(getView()));
-                theGameEngine.addGameObject(new SpaceShipPlayer(theGameEngine));
+                theGameEngine.addGameObject(new SpaceShipPlayer(theGameEngine, shipInGameSkin));
                 theGameEngine.addGameObject(new FramesPerSecondCounter(theGameEngine));
                 theGameEngine.addGameObject(new GameController(theGameEngine));
                 theGameEngine.startGame();
@@ -91,7 +97,7 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
         return false;
     }
 
-    private void pauseGameAndShowPauseDialog() {
+    public void pauseGameAndShowPauseDialog() {
         theGameEngine.pauseGame();
         new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.pause_dialog_message)
@@ -118,7 +124,6 @@ public class GameFragment extends BaseFragment implements View.OnClickListener {
                 })
                 .create()
                 .show();
-
     }
 
     private void playOrPause() {

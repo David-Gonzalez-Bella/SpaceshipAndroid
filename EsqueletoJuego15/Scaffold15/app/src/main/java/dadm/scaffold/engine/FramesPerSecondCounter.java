@@ -58,8 +58,11 @@ public class FramesPerSecondCounter extends GameObject {
 
         //Lifes
         paint.setColor(Color.WHITE);
-        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 3, textHeight, paint);
+        canvas.drawText("Stars:   " + SpaceShipPlayer.stars, textWidth * 3, textHeight, paint);
 
+        //Stars
+        paint.setColor(Color.WHITE);
+        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 5, textHeight, paint);
         draws++;
     }
 }

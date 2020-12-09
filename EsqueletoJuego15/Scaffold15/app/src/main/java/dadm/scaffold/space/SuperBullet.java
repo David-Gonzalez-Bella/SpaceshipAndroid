@@ -6,14 +6,16 @@ import dadm.scaffold.engine.ScreenGameObject;
 import dadm.scaffold.engine.Sprite;
 import dadm.scaffold.sound.GameEvent;
 
-public class Bullet extends Sprite {
+public class SuperBullet extends Sprite {
 
     private double speedFactor;
 
     private SpaceShipPlayer parent;
 
-    public Bullet(GameEngine gameEngine){
-        super(gameEngine, R.drawable.bullet);
+    private int xDirection;
+
+    public SuperBullet(GameEngine gameEngine){
+        super(gameEngine, R.drawable.bullet_02);
 
         speedFactor = gameEngine.pixelFactor * -300d / 1000d;
     }
@@ -23,24 +25,26 @@ public class Bullet extends Sprite {
 
     @Override
     public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
+        positionX += (speedFactor / 2 * xDirection) * elapsedMillis;
         positionY += speedFactor * elapsedMillis;
         if (positionY < -height) {
             gameEngine.removeGameObject(this);
             // And return it to the pool
-            parent.releaseBullet(this);
+            parent.releaseSuperBullet(this);
         }
     }
 
-    public void init(SpaceShipPlayer parentPlayer, double initPositionX, double initPositionY) {
+    public void init(SpaceShipPlayer parentPlayer, double initPositionX, double initPositionY, int direction) {
         positionX = initPositionX - width/2;
         positionY = initPositionY - height/2;
+        xDirection = direction;
         parent = parentPlayer;
     }
 
     private void removeObject(GameEngine gameEngine) {
         gameEngine.removeGameObject(this);
         // And return it to the pool
-        parent.releaseBullet(this);
+        parent.releaseSuperBullet(this);
     }
 
     @Override

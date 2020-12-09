@@ -1,38 +1,41 @@
 package dadm.scaffold.space;
 
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import dadm.scaffold.R;
+import dadm.scaffold.ScaffoldActivity;
+import dadm.scaffold.counter.ResultsFragment;
 import dadm.scaffold.engine.GameEngine;
 import dadm.scaffold.engine.ScreenGameObject;
 import dadm.scaffold.engine.Sprite;
 import dadm.scaffold.input.InputController;
 import dadm.scaffold.sound.GameEvent;
-import android.widget.Toast;
 
 
 public class SpaceShipPlayer extends Sprite {
 
     private static final int INITIAL_BULLET_POOL_AMOUNT = 6;
-    private static final long TIME_BETWEEN_BULLETS = 250;
+    private static final int INITIAL_SUPER_BULLET_POOL_AMOUNT = 8;
+    private static final long TIME_BETWEEN_BULLETS = 300;
+    private static final long TIME_BETWEEN_SUPER_BULLETS = 500;
 
     List<Bullet> bullets = new ArrayList<Bullet>();
+    List<SuperBullet> superBullets = new ArrayList<SuperBullet>();
     private long timeSinceLastFire;
+    private long timeSinceLastFireSuper;
 
     private int maxX;
     private int maxY;
     private double speedFactor;
 
     public static int score = 0;
+    public static int stars = 0;
     public static int lifes = 3;
 
 
-    public SpaceShipPlayer(GameEngine gameEngine){
-        super(gameEngine, R.drawable.ship);
+    public SpaceShipPlayer(GameEngine gameEngine, int skin) {
+        super(gameEngine, skin);
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
@@ -41,8 +44,11 @@ public class SpaceShipPlayer extends Sprite {
     }
 
     private void initBulletPool(GameEngine gameEngine) {
-        for (int i=0; i<INITIAL_BULLET_POOL_AMOUNT; i++) {
+        for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
             bullets.add(new Bullet(gameEngine));
+        }
+        for (int i = 0; i < INITIAL_SUPER_BULLET_POOL_AMOUNT; i++) {
+            superBullets.add(new SuperBullet(gameEngine));
         }
     }
 
@@ -57,6 +63,16 @@ public class SpaceShipPlayer extends Sprite {
         bullets.add(bullet);
     }
 
+    private SuperBullet getSuperBullet() {
+        if (superBullets.isEmpty()) {
+            return null;
+        }
+        return superBullets.remove(0);
+    }
+
+    void releaseSuperBullet(SuperBullet superBullet) {
+        superBullets.add(superBullet);
+    }
 
     @Override
     public void startGame() {
@@ -69,6 +85,7 @@ public class SpaceShipPlayer extends Sprite {
         // Get the info from the inputController
         updatePosition(elapsedMillis, gameEngine.theInputController);
         checkFiring(elapsedMillis, gameEngine);
+        checkFiringSuper(elapsedMillis, gameEngine);
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
@@ -89,18 +106,38 @@ public class SpaceShipPlayer extends Sprite {
     }
 
     private void checkFiring(long elapsedMillis, GameEngine gameEngine) {
-        if (gameEngine.theInputController.isFiring && timeSinceLastFire > TIME_BETWEEN_BULLETS) {
+        if (timeSinceLastFire > TIME_BETWEEN_BULLETS) { //Shooting normal bullets non stop
             Bullet bullet = getBullet();
             if (bullet == null) {
                 return;
             }
-            bullet.init(this, positionX + width/2, positionY);
+            bullet.init(this, positionX + width / 2, positionY);
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
-        }
-        else {
+        } else {
             timeSinceLastFire += elapsedMillis;
+        }
+    }
+
+    private void checkFiringSuper(long elapsedMillis, GameEngine gameEngine) {
+        if (gameEngine.theInputController.isFiring && timeSinceLastFireSuper > TIME_BETWEEN_SUPER_BULLETS) { //Check if super bullets can be fired
+            SuperBullet bulletLeft = getSuperBullet();
+            if (bulletLeft == null) return;
+
+            SuperBullet bulletRight = getSuperBullet();
+            if (bulletRight == null) return;
+
+            bulletLeft.init(this, positionX + width / 2, positionY, -1);
+            gameEngine.addGameObject(bulletLeft);
+
+            bulletRight.init(this, positionX + width / 2, positionY, 1);
+            gameEngine.addGameObject(bulletRight);
+
+            timeSinceLastFireSuper = 0;
+            gameEngine.onGameEvent(GameEvent.LaserFired);
+        } else {
+            timeSinceLastFireSuper += elapsedMillis;
         }
     }
 
@@ -110,12 +147,11 @@ public class SpaceShipPlayer extends Sprite {
             gameEngine.removeGameObject(otherObject);
             ((Asteroid) otherObject).gameController.returnToPool((Asteroid) otherObject);
             lifes--;
-            if(lifes <= 0) {
+            if (lifes <= 0) {
                 gameEngine.removeGameObject(this);
                 gameEngine.stopGame();
-                Asteroid a = (Asteroid) otherObject;
-                a.removeObject(gameEngine);
                 gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+                ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
             }
         }
     }

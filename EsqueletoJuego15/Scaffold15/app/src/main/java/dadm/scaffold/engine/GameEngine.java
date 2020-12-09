@@ -1,16 +1,21 @@
 package dadm.scaffold.engine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import dadm.scaffold.R;
+import dadm.scaffold.ScaffoldActivity;
 import dadm.scaffold.input.InputController;
 import dadm.scaffold.sound.GameEvent;
 import dadm.scaffold.sound.SoundManager;
+import dadm.scaffold.space.SpaceShipPlayer;
 
 public class GameEngine {
 
@@ -34,7 +39,7 @@ public class GameEngine {
     public int height;
     public double pixelFactor;
 
-    private Activity mainActivity;
+    public Activity mainActivity;
 
     public GameEngine(Activity activity, GameView gameView) {
         mainActivity = activity;
@@ -171,7 +176,6 @@ public class GameEngine {
         gameObjects.add(object);
         if (object instanceof ScreenGameObject) {
             ScreenGameObject sgo = (ScreenGameObject) object;
-
             quadTree.addGameObject(sgo);
         }
     }
