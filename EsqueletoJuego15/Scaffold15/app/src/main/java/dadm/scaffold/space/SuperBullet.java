@@ -6,18 +6,12 @@ import dadm.scaffold.engine.ScreenGameObject;
 import dadm.scaffold.engine.Sprite;
 import dadm.scaffold.sound.GameEvent;
 
-public class SuperBullet extends Sprite {
-
-    private double speedFactor;
-
-    private SpaceShipPlayer parent;
+public class SuperBullet extends Bullet {
 
     private int xDirection;
 
     public SuperBullet(GameEngine gameEngine){
         super(gameEngine, R.drawable.bullet_02);
-
-        speedFactor = gameEngine.pixelFactor * -300d / 1000d;
     }
 
     @Override
@@ -35,28 +29,13 @@ public class SuperBullet extends Sprite {
     }
 
     public void init(SpaceShipPlayer parentPlayer, double initPositionX, double initPositionY, int direction) {
-        positionX = initPositionX - width/2;
-        positionY = initPositionY - height/2;
+        super.init(parentPlayer, initPositionX, initPositionY);
         xDirection = direction;
-        parent = parentPlayer;
-    }
-
-    private void removeObject(GameEngine gameEngine) {
-        gameEngine.removeGameObject(this);
-        // And return it to the pool
-        parent.releaseSuperBullet(this);
     }
 
     @Override
-    public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
-        if (otherObject instanceof Asteroid) {
-            // Remove both from the game (and return them to their pools)
-            removeObject(gameEngine);
-            Asteroid a = (Asteroid) otherObject;
-            a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.AsteroidHit);
-            SpaceShipPlayer.score += 100;
-            // Add some score
-        }
+    public void removeObject(GameEngine gameEngine) {
+        gameEngine.removeGameObject(this);
+        parent.releaseSuperBullet(this);
     }
 }

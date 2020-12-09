@@ -8,13 +8,11 @@ import dadm.scaffold.sound.GameEvent;
 
 public class Bullet extends Sprite {
 
-    private double speedFactor;
+    protected double speedFactor;
+    protected SpaceShipPlayer parent;
 
-    private SpaceShipPlayer parent;
-
-    public Bullet(GameEngine gameEngine){
-        super(gameEngine, R.drawable.bullet);
-
+    public Bullet(GameEngine gameEngine, int sprite){
+        super(gameEngine, sprite);
         speedFactor = gameEngine.pixelFactor * -300d / 1000d;
     }
 
@@ -37,9 +35,8 @@ public class Bullet extends Sprite {
         parent = parentPlayer;
     }
 
-    private void removeObject(GameEngine gameEngine) {
+    protected void removeObject(GameEngine gameEngine) {
         gameEngine.removeGameObject(this);
-        // And return it to the pool
         parent.releaseBullet(this);
     }
 

@@ -3,7 +3,9 @@ package dadm.scaffold.engine;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -39,6 +41,11 @@ public abstract class Sprite extends ScreenGameObject {
                 || positionY < - height) {
             return;
         }
+        //Extra: Paint Sphere hitbox [HERE]
+//        Paint mPaint = new Paint();
+//        mPaint.setColor(Color.CYAN);
+//        canvas.drawCircle((float)this.positionX, (float)this.positionY, (float)this.radius, mPaint);
+
         matrix.reset();
         matrix.postScale((float) pixelFactor, (float) pixelFactor);
         matrix.postTranslate((float) positionX, (float) positionY);

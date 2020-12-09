@@ -17,8 +17,8 @@ public class SpaceShipPlayer extends Sprite {
 
     private static final int INITIAL_BULLET_POOL_AMOUNT = 6;
     private static final int INITIAL_SUPER_BULLET_POOL_AMOUNT = 8;
-    private static final long TIME_BETWEEN_BULLETS = 300;
-    private static final long TIME_BETWEEN_SUPER_BULLETS = 500;
+    private static final long TIME_BETWEEN_BULLETS = 600;
+    private static final long TIME_BETWEEN_SUPER_BULLETS = 800;
 
     List<Bullet> bullets = new ArrayList<Bullet>();
     List<SuperBullet> superBullets = new ArrayList<SuperBullet>();
@@ -45,7 +45,7 @@ public class SpaceShipPlayer extends Sprite {
 
     private void initBulletPool(GameEngine gameEngine) {
         for (int i = 0; i < INITIAL_BULLET_POOL_AMOUNT; i++) {
-            bullets.add(new Bullet(gameEngine));
+            bullets.add(new Bullet(gameEngine, R.drawable.bullet));
         }
         for (int i = 0; i < INITIAL_SUPER_BULLET_POOL_AMOUNT; i++) {
             superBullets.add(new SuperBullet(gameEngine));
@@ -143,7 +143,7 @@ public class SpaceShipPlayer extends Sprite {
 
     @Override
     public void onCollision(GameEngine gameEngine, ScreenGameObject otherObject) {
-        if (otherObject instanceof Asteroid) {
+        if (otherObject instanceof Asteroid) { //If we collide with an asteroid
             gameEngine.removeGameObject(otherObject);
             ((Asteroid) otherObject).gameController.returnToPool((Asteroid) otherObject);
             lifes--;
@@ -153,6 +153,15 @@ public class SpaceShipPlayer extends Sprite {
                 gameEngine.onGameEvent(GameEvent.SpaceshipHit);
                 ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
             }
+        }else if(otherObject instanceof PowerUp){ //If we collide with a power up
+            gameEngine.removeGameObject(otherObject);
+            ((PowerUp) otherObject).gameController.returnToPool((PowerUp) otherObject);
+            ((PowerUp)otherObject).Effect(); //The power up triggers its effect
+        }
+        else if(otherObject instanceof StarScore){ //If we collide with star
+            gameEngine.removeGameObject(otherObject);
+            ((StarScore) otherObject).gameController.returnToPool((StarScore) otherObject);
+            stars++;
         }
     }
 }

@@ -19,12 +19,11 @@ import dadm.scaffold.space.SpaceShipPlayer;
 
 public class GameEngine {
 
-
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
     private List<Collision> detectedCollisions = new ArrayList<Collision>();
-    private QuadTree quadTree = new QuadTree();
+    //private QuadTree quadTree = new QuadTree();
 
     private UpdateThread theUpdateThread;
     private DrawThread theDrawThread;
@@ -47,14 +46,10 @@ public class GameEngine {
         theGameView = gameView;
         theGameView.setGameObjects(this.gameObjects);
 
-        QuadTree.init();
-
         this.width = theGameView.getWidth()
                 - theGameView.getPaddingRight() - theGameView.getPaddingLeft();
         this.height = theGameView.getHeight()
                 - theGameView.getPaddingTop() - theGameView.getPaddingTop();
-
-        quadTree.setArea(new Rect(0, 0, width, height));
 
         this.pixelFactor = this.height / 400d;
     }
@@ -124,29 +119,39 @@ public class GameEngine {
     }
 
     public void onUpdate(long elapsedMillis) {
-        int nugameObjects = gameObjects.size();
-        for (int i = 0; i < nugameObjects; i++) {
-            GameObject go =  gameObjects.get(i);
+        int numGameObjects = gameObjects.size();
+        for (int i = 0; i < numGameObjects; i++) {
+            GameObject go = gameObjects.get(i);
             go.onUpdate(elapsedMillis, this);
-            if(go instanceof ScreenGameObject) {
+            if (go instanceof ScreenGameObject) {
                 ((ScreenGameObject) go).onPostUpdate(this);
             }
         }
         checkCollisions();
         synchronized (gameObjects) {
             while (!objectsToRemove.isEmpty()) {
-                GameObject objectToRemove = objectsToRemove.remove(0);
-                gameObjects.remove(objectToRemove);
-                if (objectToRemove instanceof  ScreenGameObject) {
-                    quadTree.removeGameObject((ScreenGameObject) objectToRemove);
-                }
+                gameObjects.remove(objectsToRemove.remove(0));
             }
             while (!objectsToAdd.isEmpty()) {
-                GameObject gameObject = objectsToAdd.remove(0);
-                addGameObjectNow(gameObject);
+                gameObjects.add(objectsToAdd.remove(0));
             }
         }
     }
+
+//        synchronized (gameObjects) {  //Bad colissions: HERE]
+//            while (!objectsToRemove.isEmpty()) {
+//                GameObject objectToRemove = objectsToRemove.remove(0);
+//                gameObjects.remove(objectToRemove);
+//                if (objectToRemove instanceof  ScreenGameObject) {
+//                    //quadTree.removeGameObject((ScreenGameObject) objectToRemove);
+//                }
+//            }
+//            while (!objectsToAdd.isEmpty()) {
+//                GameObject gameObject = objectsToAdd.remove(0);
+//                addGameObjectNow(gameObject);
+//            }
+//        }
+//}
 
     public void onDraw() {
         theGameView.draw();
@@ -165,18 +170,35 @@ public class GameEngine {
     }
 
     private void checkCollisions() {
-        // Release the collisions from the previous step
-        while (!detectedCollisions.isEmpty()) {
-            Collision.release(detectedCollisions.remove(0));
+        int numObjects = gameObjects.size();
+        for (int i = 0; i < numObjects; i++) {
+            if (gameObjects.get(i) instanceof ScreenGameObject) {
+                ScreenGameObject objectA = (ScreenGameObject) gameObjects.get(i);
+                for (int j = i + 1; j < numObjects; j++) {
+                    if (gameObjects.get(j) instanceof ScreenGameObject) {
+                        ScreenGameObject objectB = (ScreenGameObject) gameObjects.get(j);
+                        if (objectA.checkCollision(objectB)) {
+                            objectA.onCollision(this, objectB);
+                            objectB.onCollision(this, objectA);
+                        }
+                    }
+                }
+            }
         }
-        quadTree.checkCollisions(this, detectedCollisions);
     }
 
-    private void addGameObjectNow (GameObject object) {
+//    private void checkCollisions() {  //Bad colissions: HERE]
+//        // Release the collisions from the previous step
+//        while (!detectedCollisions.isEmpty()) {
+//            Collision.release(detectedCollisions.remove(0));
+//        }
+//        quadTree.checkCollisions(this, detectedCollisions);
+//    }
+
+    private void addGameObjectNow(GameObject object) {
         gameObjects.add(object);
         if (object instanceof ScreenGameObject) {
             ScreenGameObject sgo = (ScreenGameObject) object;
-            quadTree.addGameObject(sgo);
         }
     }
 
@@ -184,7 +206,7 @@ public class GameEngine {
         this.soundManager = soundManager;
     }
 
-    public void onGameEvent (GameEvent gameEvent) {
+    public void onGameEvent(GameEvent gameEvent) {
         // We notify all the GameObjects
         // Also the sound manager
         soundManager.playSoundForGameEvent(gameEvent);
