@@ -3,10 +3,10 @@ package dadm.scaffold.space;
 import dadm.scaffold.R;
 import dadm.scaffold.engine.GameEngine;
 
-public class StarScore extends FallingObject {
+public class SpaceShipEnemy extends FallingObject{
 
-    public StarScore(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.star_score, 75d);
+    public SpaceShipEnemy(GameController gameController, GameEngine gameEngine) {
+        super(gameController, gameEngine, R.drawable.enemy_ship, 250d);
     }
 
     public void init(GameEngine gameEngine) {

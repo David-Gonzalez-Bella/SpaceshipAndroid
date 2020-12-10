@@ -1,5 +1,7 @@
 package dadm.scaffold.space;
 
+import android.graphics.drawable.BitmapDrawable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,29 +20,45 @@ public class SpaceShipPlayer extends Sprite {
     private static final int INITIAL_BULLET_POOL_AMOUNT = 6;
     private static final int INITIAL_SUPER_BULLET_POOL_AMOUNT = 8;
     private static final long TIME_BETWEEN_BULLETS = 600;
-    private static final long TIME_BETWEEN_SUPER_BULLETS = 800;
+    private static final long TIME_BETWEEN_SUPER_BULLETS = 1000;
 
     List<Bullet> bullets = new ArrayList<Bullet>();
     List<SuperBullet> superBullets = new ArrayList<SuperBullet>();
     private long timeSinceLastFire;
-    private long timeSinceLastFireSuper;
+    public static long timeSinceLastFireSuper;
 
     private int maxX;
     private int maxY;
     private double speedFactor;
+    private int shipSkin;
+    private int shieldSkin;
 
     public static int score = 0;
     public static int stars = 0;
-    public static int lifes = 3;
+    public static boolean shielded = false;
+    public static boolean skinChanged = false;
+    public static int health = 500;
 
 
-    public SpaceShipPlayer(GameEngine gameEngine, int skin) {
+    public SpaceShipPlayer(GameEngine gameEngine, int skin, int skinShielded) {
         super(gameEngine, skin);
+        shipSkin = skin;
+        shieldSkin = skinShielded;
         speedFactor = pixelFactor * 100d / 1000d; // We want to move at 100px per second on a 400px tall screen
         maxX = gameEngine.width - width;
         maxY = gameEngine.height - height;
 
         initBulletPool(gameEngine);
+    }
+
+    public void changeSkinSprite(int newSkin) {
+        spriteDrawable = r.getDrawable(newSkin);
+        //Recalculate hitbox
+        this.width = (int) (spriteDrawable.getIntrinsicHeight() * this.pixelFactor);
+        this.height = (int) (spriteDrawable.getIntrinsicWidth() * this.pixelFactor);
+        this.bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
+        radius = Math.max(height, width) / 2;
+        skinChanged = true;
     }
 
     private void initBulletPool(GameEngine gameEngine) {
@@ -86,6 +104,13 @@ public class SpaceShipPlayer extends Sprite {
         updatePosition(elapsedMillis, gameEngine.theInputController);
         checkFiring(elapsedMillis, gameEngine);
         checkFiringSuper(elapsedMillis, gameEngine);
+        checkShielded();
+    }
+
+    private void checkShielded() { //Method to change to the shielded skin once we pick up a shield power up
+        if (!shielded) return;
+        if (skinChanged) return;
+        changeSkinSprite(shieldSkin);
     }
 
     private void updatePosition(long elapsedMillis, InputController inputController) {
@@ -136,7 +161,7 @@ public class SpaceShipPlayer extends Sprite {
 
             timeSinceLastFireSuper = 0;
             gameEngine.onGameEvent(GameEvent.LaserFired);
-        } else {
+        } else{
             timeSinceLastFireSuper += elapsedMillis;
         }
     }
@@ -146,22 +171,31 @@ public class SpaceShipPlayer extends Sprite {
         if (otherObject instanceof Asteroid) { //If we collide with an asteroid
             gameEngine.removeGameObject(otherObject);
             ((Asteroid) otherObject).gameController.returnToPool((Asteroid) otherObject);
-            lifes--;
-            if (lifes <= 0) {
+            if (!shielded)
+                health -= 125;
+            else {
+                changeSkinSprite(shipSkin);
+                shielded = false;
+            }
+            if (health <= 0) {
                 gameEngine.removeGameObject(this);
                 gameEngine.stopGame();
                 gameEngine.onGameEvent(GameEvent.SpaceshipHit);
                 ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
             }
-        }else if(otherObject instanceof PowerUp){ //If we collide with a power up
+        } else if (otherObject instanceof PowerUp) { //If we collide with a power up
             gameEngine.removeGameObject(otherObject);
             ((PowerUp) otherObject).gameController.returnToPool((PowerUp) otherObject);
-            ((PowerUp)otherObject).Effect(); //The power up triggers its effect
-        }
-        else if(otherObject instanceof StarScore){ //If we collide with star
+            ((PowerUp) otherObject).Effect(); //The power up triggers its effect
+        } else if (otherObject instanceof StarScore) { //If we collide with star
             gameEngine.removeGameObject(otherObject);
             ((StarScore) otherObject).gameController.returnToPool((StarScore) otherObject);
             stars++;
+        }
+        else if (otherObject instanceof EndLevelObject){
+            gameEngine.removeGameObject(this);
+            gameEngine.stopGame();
+            ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
         }
     }
 }

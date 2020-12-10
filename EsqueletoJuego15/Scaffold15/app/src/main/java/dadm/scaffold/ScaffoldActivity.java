@@ -36,12 +36,14 @@ public class ScaffoldActivity extends AppCompatActivity {
         return soundManager;
     }
 
-    public void startGame(int shipSkin) {
+    public void startGame(int shipSkin, int shipSkinShielded) {
         // Navigate the the game fragment, which makes the start automatically
         SpaceShipPlayer.score = 0; //Whenever we start a game we reset the score and lifes
         SpaceShipPlayer.stars = 0;
-        SpaceShipPlayer.lifes = 3;
-        navigateToFragment(new GameFragment(shipSkin));
+        SpaceShipPlayer.health = 500;
+        SpaceShipPlayer.shielded = false;
+        SpaceShipPlayer.timeSinceLastFireSuper = 1000;
+        navigateToFragment(new GameFragment(shipSkin, shipSkinShielded));
     }
 
     public void navigateToFragment(BaseFragment dst) {

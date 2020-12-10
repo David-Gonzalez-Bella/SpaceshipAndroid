@@ -22,7 +22,7 @@ public class GameEngine {
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
-    private List<Collision> detectedCollisions = new ArrayList<Collision>();
+    //private List<Collision> detectedCollisions = new ArrayList<Collision>();
     //private QuadTree quadTree = new QuadTree();
 
     private UpdateThread theUpdateThread;

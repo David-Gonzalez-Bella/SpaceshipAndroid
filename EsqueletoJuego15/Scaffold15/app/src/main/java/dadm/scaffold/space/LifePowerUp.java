@@ -12,6 +12,7 @@ public class LifePowerUp extends PowerUp {
 
     @Override
     public void Effect() {
-        SpaceShipPlayer.lifes++;
+        if(SpaceShipPlayer.health < 500)
+            SpaceShipPlayer.health += 125;
     }
 }

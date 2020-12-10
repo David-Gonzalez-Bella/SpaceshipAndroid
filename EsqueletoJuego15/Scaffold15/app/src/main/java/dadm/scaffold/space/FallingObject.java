@@ -5,7 +5,7 @@ import dadm.scaffold.engine.GameEngine;
 import dadm.scaffold.engine.ScreenGameObject;
 import dadm.scaffold.engine.Sprite;
 
-public abstract class FallingObject extends Sprite {
+public abstract  class FallingObject extends Sprite {
     public final GameController gameController;
 
     protected double speed;
@@ -20,8 +20,6 @@ public abstract class FallingObject extends Sprite {
     }
 
     public void init(GameEngine gameEngine) {
-        // Asteroids initialize in the central 50% of the screen horizontally and outside of the screen vertically
-        positionX = gameEngine.random.nextInt(gameEngine.width / 2) + gameEngine.width / 4;
         positionY = -height;
     }
 

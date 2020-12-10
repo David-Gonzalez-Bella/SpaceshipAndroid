@@ -20,6 +20,7 @@ import dadm.scaffold.ScaffoldActivity;
 public class MainMenuFragment extends BaseFragment implements View.OnClickListener {
     private int skinIndex = 0;
     private int[] shipSkins = {R.drawable.ship_00, R.drawable.ship_01, R.drawable.ship_02, R.drawable.ship_03};
+    private int[] shipSkinsShielded = {R.drawable.ship_00_shielded, R.drawable.ship_01_shielded, R.drawable.ship_02_shielded, R.drawable.ship_03_shielded};
     private ImageView shipSkinPreview;
 
     public MainMenuFragment() {
@@ -67,7 +68,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
                 shipSkinPreview.setImageResource(shipSkins[skinIndex]);
                 break;
             case (R.id.btn_start):
-                ((ScaffoldActivity) getActivity()).startGame(shipSkins[skinIndex]);
+                ((ScaffoldActivity) getActivity()).startGame(shipSkins[skinIndex], shipSkinsShielded[skinIndex]);
                 break;
         }
     }

@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import dadm.scaffold.space.SpaceShipPlayer;
 
-public class FramesPerSecondCounter extends GameObject {
+public class GUI extends GameObject {
 
     private final float textWidth;
     private final float textHeight;
@@ -18,7 +18,7 @@ public class FramesPerSecondCounter extends GameObject {
 
     private String framesPerSecondText = "";
 
-    public FramesPerSecondCounter(GameEngine gameEngine) {
+    public GUI(GameEngine gameEngine) {
         paint = new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
         textHeight = (float) (25 * gameEngine.pixelFactor);
@@ -56,13 +56,28 @@ public class FramesPerSecondCounter extends GameObject {
         paint.setColor(Color.WHITE);
         canvas.drawText("Score:   " + SpaceShipPlayer.score, textWidth, textHeight, paint);
 
-        //Lifes
+        //Stars
         paint.setColor(Color.WHITE);
         canvas.drawText("Stars:   " + SpaceShipPlayer.stars, textWidth * 3, textHeight, paint);
 
-        //Stars
-        paint.setColor(Color.WHITE);
-        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 5, textHeight, paint);
+        //Lifes
+//        paint.setColor(Color.WHITE);
+//        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 5, textHeight, paint);
+
+        //Health
+        paint.setColor(Color.LTGRAY);
+        canvas.drawRect(45, 95, 505, 135, paint); //left, top, right, bottom
+        paint.setColor(Color.RED);
+        canvas.drawRect(50, 100, SpaceShipPlayer.health, 130, paint);
+
+        //Super bullet
+        paint.setColor(Color.LTGRAY);
+        canvas.drawRect(45, 195, 505, 235, paint); //left, top, right, bottom
+        paint.setColor(Color.BLUE);
+        if(SpaceShipPlayer.timeSinceLastFireSuper <= 1000)
+            canvas.drawRect(50, 200, SpaceShipPlayer.timeSinceLastFireSuper / 2, 230, paint);
+        else
+            canvas.drawRect(50, 200, 500, 230, paint);
         draws++;
     }
 }

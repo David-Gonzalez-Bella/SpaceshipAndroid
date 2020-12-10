@@ -14,6 +14,7 @@ public class Asteroid extends FallingObject {
     public void init(GameEngine gameEngine) {
         super.init(gameEngine);
         double angle = gameEngine.random.nextDouble()*Math.PI/3d-Math.PI/6d;
+        positionX = gameEngine.random.nextInt(gameEngine.width / 2) + gameEngine.width / 4;
         speedX = speed * Math.sin(angle);
         speedY = speed * Math.cos(angle);
         rotationSpeed = angle*(180d / Math.PI)/250d; // They rotate 4 times their ange in a second.

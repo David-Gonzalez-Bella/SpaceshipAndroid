@@ -10,14 +10,22 @@ import dadm.scaffold.engine.GameObject;
 
 public class GameController extends GameObject {
 
-    private static final int TIME_BETWEEN_ENEMIES = 500;
+    private static final int TIME_BETWEEN_ASTEROIDS = 800;
+    private static final int TIME_BETWEEN_ENEMY_SHIPS = 1200;
     private static final int TIME_BETWEEN_POWER_UPS = 10000;
     private static final int TIME_BETWEEN_STARS = 20000;
+    private static final long TIME_END_LEVEL_PORTAL = 1000;
     private long currentMillis;
+
     private List<Asteroid> asteroidPool = new ArrayList<Asteroid>();
+    private List<SpaceShipEnemy> enemyShipsPool = new ArrayList<SpaceShipEnemy>();
     private List<PowerUp> powerUpPool = new ArrayList<PowerUp>();
     private List<StarScore> starsPool = new ArrayList<StarScore>();
-    private int enemiesSpawned;
+    private EndLevelObject endLevel;
+    private boolean endLevelCreated = false;
+
+    private int asteroidsSpawned;
+    private int enemyShipsSpawned;
     private int powerUpsSpawned;
     private int starsSpawned;
 
@@ -25,17 +33,21 @@ public class GameController extends GameObject {
         // We initialize the pool of items now (enemies and power ups)
         for (int i = 0; i < 10; i++) {
             asteroidPool.add(new Asteroid(this, gameEngine));
+            enemyShipsPool.add(new SpaceShipEnemy(this, gameEngine));
         }
         for (int i = 0; i < 2; i++) {
             powerUpPool.add(new LifePowerUp(this, gameEngine));
+            powerUpPool.add(new ShieldPowerUp(this, gameEngine));
             starsPool.add(new StarScore(this, gameEngine));
         }
+        endLevel = new EndLevelObject(this, gameEngine);
     }
 
     @Override
     public void startGame() {
         currentMillis = 0;
-        enemiesSpawned = 0;
+        asteroidsSpawned = 0;
+        enemyShipsSpawned = 0;
         powerUpsSpawned = 0;
         starsSpawned = 0;
     }
@@ -44,16 +56,26 @@ public class GameController extends GameObject {
     public void onUpdate(long elapsedMillis, GameEngine gameEngine) {
         currentMillis += elapsedMillis;
 
-        long waveTimestamp = enemiesSpawned*TIME_BETWEEN_ENEMIES;
+        long waveTimestampAsteroids = asteroidsSpawned * TIME_BETWEEN_ASTEROIDS;
+        long waveTimestampEnemyShips = enemyShipsSpawned*TIME_BETWEEN_ENEMY_SHIPS;
         long waveTimestampPWU = powerUpsSpawned*TIME_BETWEEN_POWER_UPS;
         long waveTimestampStar = starsSpawned*TIME_BETWEEN_STARS;
 
-        if (currentMillis > waveTimestamp) {
+        if (currentMillis > waveTimestampAsteroids) {
             // Spawn a new enemy
             Asteroid a = asteroidPool.remove(0);
             a.init(gameEngine);
             gameEngine.addGameObject(a);
-            enemiesSpawned++;
+            asteroidsSpawned++;
+            return;
+        }
+
+        if (currentMillis > waveTimestampEnemyShips) {
+            // Spawn a new enemy
+            SpaceShipEnemy a = enemyShipsPool.remove(0);
+            a.init(gameEngine);
+            gameEngine.addGameObject(a);
+            enemyShipsSpawned++;
             return;
         }
 
@@ -74,6 +96,13 @@ public class GameController extends GameObject {
             starsSpawned++;
             return;
         }
+
+        if(currentMillis > TIME_END_LEVEL_PORTAL && !endLevelCreated){
+            endLevel.init(gameEngine);
+            gameEngine.addGameObject(endLevel);
+            endLevelCreated = true;
+            return;
+        }
     }
 
     @Override
@@ -83,6 +112,10 @@ public class GameController extends GameObject {
 
     public void returnToPool(Asteroid asteroid) {
         asteroidPool.add(asteroid);
+    }
+
+    public void returnToPool(SpaceShipEnemy enemyShip) {
+        enemyShipsPool.add(enemyShip);
     }
 
     public void returnToPool(PowerUp powerUp) {

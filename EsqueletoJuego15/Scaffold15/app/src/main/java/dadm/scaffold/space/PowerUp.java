@@ -15,6 +15,7 @@ public abstract class PowerUp extends FallingObject {
 
     public void init(GameEngine gameEngine) {
         super.init(gameEngine);
+        positionX = gameEngine.random.nextInt(gameEngine.width / 2) + gameEngine.width / 4;
         speedX = 0.0d;
         speedY = speed;
     }
