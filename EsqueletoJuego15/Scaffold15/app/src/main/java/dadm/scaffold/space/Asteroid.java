@@ -2,13 +2,11 @@ package dadm.scaffold.space;
 
 import dadm.scaffold.R;
 import dadm.scaffold.engine.GameEngine;
-import dadm.scaffold.engine.ScreenGameObject;
-import dadm.scaffold.engine.Sprite;
 
 public class Asteroid extends FallingObject {
 
     public Asteroid(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.a10000, 200d);
+        super(gameController, gameEngine, R.drawable.planet, 200d);
     }
 
     public void init(GameEngine gameEngine) {
@@ -52,7 +50,7 @@ public class Asteroid extends FallingObject {
     private double rotationSpeed;
 
     public Asteroid(GameController gameController, GameEngine gameEngine) {
-        super(gameEngine, R.drawable.a10000);
+        super(gameEngine, R.drawable.planet);
         this.speed = 200d * pixelFactor/1000d;
         this.gameController = gameController;
     }

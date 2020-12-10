@@ -24,7 +24,7 @@ public class SuperBullet extends Bullet {
         if (positionY < -height) {
             gameEngine.removeGameObject(this);
             // And return it to the pool
-            parent.releaseSuperBullet(this);
+            ((SpaceShipPlayer)parent).releaseSuperBullet(this);
         }
     }
 
@@ -36,6 +36,6 @@ public class SuperBullet extends Bullet {
     @Override
     public void removeObject(GameEngine gameEngine) {
         gameEngine.removeGameObject(this);
-        parent.releaseSuperBullet(this);
+        ((SpaceShipPlayer)parent).releaseSuperBullet(this);
     }
 }
