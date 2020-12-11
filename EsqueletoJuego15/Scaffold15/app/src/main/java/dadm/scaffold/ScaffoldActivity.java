@@ -3,6 +3,7 @@ package dadm.scaffold;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class ScaffoldActivity extends AppCompatActivity {
     private static final String TAG_FRAGMENT = "content";
 
     private SoundManager soundManager;
+    public MediaPlayer buttonPressedSnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,7 @@ public class ScaffoldActivity extends AppCompatActivity {
         }
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         soundManager = new SoundManager(getApplicationContext());
+        buttonPressedSnd = MediaPlayer.create(this, R.raw.button_pressed);
     }
 
     public SoundManager getSoundManager() {
@@ -52,6 +55,18 @@ public class ScaffoldActivity extends AppCompatActivity {
                 .replace(R.id.container, dst, TAG_FRAGMENT)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SoundManager.bgPlayer.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SoundManager.bgPlayer.start();
     }
 
     @Override

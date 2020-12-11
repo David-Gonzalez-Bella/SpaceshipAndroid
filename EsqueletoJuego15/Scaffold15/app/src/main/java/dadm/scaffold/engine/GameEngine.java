@@ -22,8 +22,6 @@ public class GameEngine {
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     private List<GameObject> objectsToAdd = new ArrayList<GameObject>();
     private List<GameObject> objectsToRemove = new ArrayList<GameObject>();
-    //private List<Collision> detectedCollisions = new ArrayList<Collision>();
-    //private QuadTree quadTree = new QuadTree();
 
     private UpdateThread theUpdateThread;
     private DrawThread theDrawThread;
@@ -138,21 +136,6 @@ public class GameEngine {
         }
     }
 
-//        synchronized (gameObjects) {  //Bad colissions: HERE]
-//            while (!objectsToRemove.isEmpty()) {
-//                GameObject objectToRemove = objectsToRemove.remove(0);
-//                gameObjects.remove(objectToRemove);
-//                if (objectToRemove instanceof  ScreenGameObject) {
-//                    //quadTree.removeGameObject((ScreenGameObject) objectToRemove);
-//                }
-//            }
-//            while (!objectsToAdd.isEmpty()) {
-//                GameObject gameObject = objectsToAdd.remove(0);
-//                addGameObjectNow(gameObject);
-//            }
-//        }
-//}
-
     public void onDraw() {
         theGameView.draw();
     }
@@ -186,14 +169,6 @@ public class GameEngine {
             }
         }
     }
-
-//    private void checkCollisions() {  //Bad colissions: HERE]
-//        // Release the collisions from the previous step
-//        while (!detectedCollisions.isEmpty()) {
-//            Collision.release(detectedCollisions.remove(0));
-//        }
-//        quadTree.checkCollisions(this, detectedCollisions);
-//    }
 
     private void addGameObjectNow(GameObject object) {
         gameObjects.add(object);

@@ -22,7 +22,7 @@ public abstract class Sprite extends ScreenGameObject {
     protected Drawable spriteDrawable;
     protected Resources r;
 
-    protected Sprite (GameEngine gameEngine, int drawableRes) {
+    protected Sprite(GameEngine gameEngine, int drawableRes) {
         r = gameEngine.getContext().getResources();
         spriteDrawable = r.getDrawable(drawableRes);
 
@@ -33,18 +33,18 @@ public abstract class Sprite extends ScreenGameObject {
 
         this.bitmap = ((BitmapDrawable) spriteDrawable).getBitmap();
 
-        radius = Math.max(height, width)/2;
+        radius = Math.max(height, width) / 2;
     }
 
     @Override
     public void onDraw(Canvas canvas) {
         if (positionX > canvas.getWidth()
                 || positionY > canvas.getHeight()
-                || positionX < - width
-                || positionY < - height) {
+                || positionX < -width
+                || positionY < -height) {
             return;
         }
-        //Extra: Paint Sphere hitbox [HERE]
+//Extra: Paint Sphere hitbox
 //        Paint mPaint = new Paint();
 //        mPaint.setColor(Color.CYAN);
 //        canvas.drawCircle((float)this.positionX, (float)this.positionY, (float)this.radius, mPaint);
@@ -52,7 +52,7 @@ public abstract class Sprite extends ScreenGameObject {
         matrix.reset();
         matrix.postScale((float) pixelFactor, (float) pixelFactor);
         matrix.postTranslate((float) positionX, (float) positionY);
-        matrix.postRotate((float) rotation, (float) (positionX + width/2), (float) (positionY + height/2));
+        matrix.postRotate((float) rotation, (float) (positionX + width / 2), (float) (positionY + height / 2));
         canvas.drawBitmap(bitmap, matrix, null);
     }
 }

@@ -1,7 +1,6 @@
 package dadm.scaffold.space;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,7 +138,7 @@ public class SpaceShipPlayer extends Sprite implements ShootingObject {
             bullet.init(this, positionX + width / 2, positionY + height / 2);
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
+            gameEngine.onGameEvent(GameEvent.BulletFired);
         } else {
             timeSinceLastFire += elapsedMillis;
         }
@@ -160,7 +159,7 @@ public class SpaceShipPlayer extends Sprite implements ShootingObject {
             gameEngine.addGameObject(bulletRight);
 
             timeSinceLastFireSuper = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
+            gameEngine.onGameEvent(GameEvent.SuperBulletFired);
         } else {
             timeSinceLastFireSuper += elapsedMillis;
         }
@@ -171,49 +170,51 @@ public class SpaceShipPlayer extends Sprite implements ShootingObject {
         if (otherObject instanceof Asteroid) { //If we collide with an asteroid
             gameEngine.removeGameObject(otherObject);
             ((Asteroid) otherObject).gameController.returnToPool((Asteroid) otherObject);
-            checkCollisionWithEnemy();
+            checkCollisionWithEnemy(gameEngine);
 
         } else if (otherObject instanceof SpaceShipEnemy) {
             gameEngine.removeGameObject(otherObject);
             ((SpaceShipEnemy) otherObject).gameController.returnToPool((SpaceShipEnemy) otherObject);
-            checkCollisionWithEnemy();
+            checkCollisionWithEnemy(gameEngine);
 
         } else if (otherObject instanceof Bullet && ((Bullet) otherObject).parent instanceof SpaceShipEnemy) {
             gameEngine.removeGameObject(otherObject);
-            ((Bullet) otherObject).parent.releaseBullet((Bullet)otherObject);
-            checkCollisionWithEnemy();
+            ((Bullet) otherObject).parent.releaseBullet((Bullet) otherObject);
+            checkCollisionWithEnemy(gameEngine);
 
         } else if (otherObject instanceof PowerUp) { //If we collide with a power up
             gameEngine.removeGameObject(otherObject);
             ((PowerUp) otherObject).gameController.returnToPool((PowerUp) otherObject);
-            ((PowerUp) otherObject).Effect(); //The power up triggers its effect
+            ((PowerUp) otherObject).Effect(gameEngine); //The power up triggers its effect
 
         } else if (otherObject instanceof StarScore) { //If we collide with star_score
             gameEngine.removeGameObject(otherObject);
+            gameEngine.onGameEvent(GameEvent.StarPicked);
             ((StarScore) otherObject).gameController.returnToPool((StarScore) otherObject);
             stars++;
 
         } else if (otherObject instanceof EndLevelObject) {
             gameEngine.removeGameObject(this);
             gameEngine.stopGame();
-            ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
+            ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment(0));
         }
 
         //In case that the collision killed the player
         if (health <= 0) {
             gameEngine.removeGameObject(this);
             gameEngine.stopGame();
-            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
-            ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment());
+            ((ScaffoldActivity) gameEngine.mainActivity).navigateToFragment(new ResultsFragment(1));
         }
     }
 
-    private void checkCollisionWithEnemy() {
-        if (!shielded)
+    private void checkCollisionWithEnemy(GameEngine gameEngine) {
+        if (!shielded) {
             health -= 125;
-        else {
+            gameEngine.onGameEvent(GameEvent.SpaceshipHit);
+        } else {
             changeSkinSprite(shipSkin);
             shielded = false;
+            gameEngine.onGameEvent(GameEvent.ShieldBlock);
         }
     }
 }

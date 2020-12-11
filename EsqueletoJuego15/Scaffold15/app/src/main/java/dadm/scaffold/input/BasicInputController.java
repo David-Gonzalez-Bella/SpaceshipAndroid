@@ -7,8 +7,6 @@ import dadm.scaffold.R;
 
 public class BasicInputController extends InputController implements View.OnTouchListener {
 
-    //Atención: se usa OnTouchListener para saber cuando el botón
-    //sigue siendo apretado
     public BasicInputController(View view) {
         view.findViewById(R.id.keypad_up).setOnTouchListener(this);
         view.findViewById(R.id.keypad_down).setOnTouchListener(this);
@@ -19,7 +17,7 @@ public class BasicInputController extends InputController implements View.OnTouc
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        //Se usa getActionMasked para manejar el multitouch
+        //We use getActionMasked manages multitouch
         int action = event.getActionMasked();
         int id = v.getId();
         if (action == MotionEvent.ACTION_DOWN) {

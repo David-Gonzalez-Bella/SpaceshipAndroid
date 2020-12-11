@@ -20,7 +20,7 @@ public final class SoundManager {
 	
 	private Context context;
 	private SoundPool soundPool;
-	private MediaPlayer bgPlayer;
+	public static MediaPlayer bgPlayer;
 
 	public SoundManager(Context context) {
 		this.context = context;
@@ -49,9 +49,14 @@ public final class SoundManager {
 	private void loadSounds() {
 		createSoundPool();
 		soundsMap = new HashMap<GameEvent, Integer>();
-		loadEventSound(context, GameEvent.AsteroidHit, "Asteroid_explosion_1.wav");
+		loadEventSound(context, GameEvent.EnemyHit, "Asteroid_explosion_1.wav");
 		loadEventSound(context, GameEvent.SpaceshipHit, "Spaceship_explosion.wav");
-		loadEventSound(context, GameEvent.LaserFired, "Laser_shoot.wav");
+		loadEventSound(context, GameEvent.BulletFired, "Laser_shoot.wav");
+		loadEventSound(context, GameEvent.SuperBulletFired, "Super_Bullet_shoot.wav");
+		loadEventSound(context, GameEvent.StarPicked, "Star_Score_pick.wav");
+		loadEventSound(context, GameEvent.ShieldPicked, "Shield_PowerUp_pick.wav");
+		loadEventSound(context, GameEvent.ShieldBlock, "Shield_Block.mp3");
+		loadEventSound(context, GameEvent.LifePicked, "Life_PowerUp_pick.wav");
 	}
 
 	private void loadMusic() {

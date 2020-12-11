@@ -1,6 +1,5 @@
 package dadm.scaffold.space;
 
-import dadm.scaffold.R;
 import dadm.scaffold.engine.GameEngine;
 import dadm.scaffold.engine.ScreenGameObject;
 import dadm.scaffold.engine.Sprite;
@@ -50,21 +49,21 @@ public class Bullet extends Sprite {
             removeObject(gameEngine);
             Asteroid a = (Asteroid) otherObject;
             a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.AsteroidHit);
+            gameEngine.onGameEvent(GameEvent.EnemyHit);
             SpaceShipPlayer.score += 100; //Add score
         }
         else if(otherObject instanceof SpaceShipEnemy && parent instanceof SpaceShipPlayer){
             removeObject(gameEngine);
             SpaceShipEnemy a = (SpaceShipEnemy) otherObject;
             a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.AsteroidHit);
+            gameEngine.onGameEvent(GameEvent.EnemyHit);
             SpaceShipPlayer.score += 200; //Add score
         }
         else if(otherObject instanceof Bullet && ((Bullet)otherObject).parent instanceof SpaceShipEnemy){
             removeObject(gameEngine);
             Bullet a = (Bullet) otherObject;
             a.removeObject(gameEngine);
-            gameEngine.onGameEvent(GameEvent.AsteroidHit);
+            gameEngine.onGameEvent(GameEvent.EnemyHit);
         }
     }
 }

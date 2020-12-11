@@ -1,7 +1,12 @@
 package dadm.scaffold.sound;
 
 public enum GameEvent {
-    AsteroidHit,
+    EnemyHit,
     SpaceshipHit,
-    LaserFired
+    BulletFired,
+    SuperBulletFired,
+    StarPicked,
+    ShieldPicked,
+    ShieldBlock,
+    LifePicked,
 }

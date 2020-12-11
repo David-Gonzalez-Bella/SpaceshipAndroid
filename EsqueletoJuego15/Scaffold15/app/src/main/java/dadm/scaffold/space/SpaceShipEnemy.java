@@ -52,7 +52,6 @@ public class SpaceShipEnemy extends FallingObject implements ShootingObject{
             bullet.init(this, positionX + width / 2, positionY + height / 2);
             gameEngine.addGameObject(bullet);
             timeSinceLastFire = 0;
-            gameEngine.onGameEvent(GameEvent.LaserFired);
         } else {
             timeSinceLastFire += elapsedMillis;
         }

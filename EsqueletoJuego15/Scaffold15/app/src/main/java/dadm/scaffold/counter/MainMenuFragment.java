@@ -22,6 +22,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     private int[] shipSkins = {R.drawable.ship_00, R.drawable.ship_01, R.drawable.ship_02, R.drawable.ship_03};
     private int[] shipSkinsShielded = {R.drawable.ship_00_shielded, R.drawable.ship_01_shielded, R.drawable.ship_02_shielded, R.drawable.ship_03_shielded};
     private ImageView shipSkinPreview;
+    private ScaffoldActivity myActivity;
 
     public MainMenuFragment() {
     }
@@ -30,6 +31,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_menu, container, false);
+        myActivity = (ScaffoldActivity)getActivity();
         return rootView;
     }
 
@@ -48,6 +50,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         String url;
         Intent web;
+        myActivity.buttonPressedSnd.start();
         switch (v.getId()) {
             case (R.id.sainnyLogo):
                 url = "https://www.artstation.com/sainny";

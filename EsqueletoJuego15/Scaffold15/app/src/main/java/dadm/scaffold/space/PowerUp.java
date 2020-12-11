@@ -35,5 +35,5 @@ public abstract class PowerUp extends FallingObject {
         gameController.returnToPool(this);
     }
 
-    public abstract void Effect(); //Each power up will have its own effect
+    public abstract void Effect(GameEngine gameEngine); //Each power up will have its own effect
 }

@@ -60,10 +60,6 @@ public class GUI extends GameObject {
         paint.setColor(Color.WHITE);
         canvas.drawText("Stars:   " + SpaceShipPlayer.stars, textWidth * 3, textHeight, paint);
 
-        //Lifes
-//        paint.setColor(Color.WHITE);
-//        canvas.drawText("Lifes:   " + SpaceShipPlayer.lifes, textWidth * 5, textHeight, paint);
-
         //Health
         paint.setColor(Color.LTGRAY);
         canvas.drawRect(45, 95, 505, 135, paint); //left, top, right, bottom
@@ -72,7 +68,7 @@ public class GUI extends GameObject {
 
         //Super bullet
         paint.setColor(Color.LTGRAY);
-        canvas.drawRect(45, 195, 505, 235, paint); //left, top, right, bottom
+        canvas.drawRect(45, 195, 505, 235, paint);
         paint.setColor(Color.BLUE);
         if(SpaceShipPlayer.timeSinceLastFireSuper <= 1000)
             canvas.drawRect(50, 200, SpaceShipPlayer.timeSinceLastFireSuper / 2, 230, paint);
