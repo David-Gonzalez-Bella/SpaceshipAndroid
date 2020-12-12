@@ -10,12 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="122dp"
+            android:layout_height="92dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.499"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.382"
+            app:srcCompat="@drawable/frame_icon" />
+
         <TextView
             android:id="@+id/aboutUs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:fontFamily="@font/bubblegum_sans"
             android:text="About Us:"
+            android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/kakugamesLogo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"
@@ -25,27 +39,29 @@
 
         <ImageView
             android:id="@+id/gameTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="377dp"
+            android:layout_height="90dp"
+            android:layout_marginBottom="30dp"
             android:contentDescription="TODO"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.18"
-            app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/tittle_game" />
 
         <ImageView
             android:id="@+id/skin"
-            android:layout_width="87dp"
-            android:layout_height="101dp"
+            android:layout_width="73dp"
+            android:layout_height="62dp"
             android:contentDescription="TODO"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.351"
+            app:layout_constraintVertical_bias="0.378"
             app:srcCompat="@drawable/ship_00" />
 
         <ImageView
@@ -55,11 +71,11 @@
             android:contentDescription="TODO"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.807"
+            app:layout_constraintHorizontal_bias="0.758"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38"
-            app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+            app:layout_constraintVertical_bias="0.379"
+            app:srcCompat="@drawable/button_right" />
 
         <ImageView
             android:id="@+id/prevSkin"
@@ -68,48 +84,55 @@
             android:contentDescription="TODO"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.205"
+            app:layout_constraintHorizontal_bias="0.251"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38"
-            app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+            app:layout_constraintVertical_bias="0.379"
+            app:srcCompat="@drawable/button_left" />
 
         <ImageButton
             android:id="@+id/btn_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:src="@android:drawable/btn_dialog"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="96dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="#00000000"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_play"
+            app:layout_constraintBottom_toTopOf="@+id/aboutUs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/skin"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageButton
             android:id="@+id/sainnyLogo"
-            android:layout_width="49dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="355dp"
+            android:layout_marginRight="355dp"
             android:background="#00FFFFFF"
             android:scaleType="centerCrop"
             android:src="@drawable/sainnylogo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.549"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.954" />
 
         <ImageButton
             android:id="@+id/kakugamesLogo"
-            android:layout_width="47dp"
-            android:layout_height="46dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="355dp"
+            android:layout_marginLeft="355dp"
             android:background="#000000"
             android:scaleType="centerCrop"
             android:src="@drawable/kakugameslogo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.45"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.953" />

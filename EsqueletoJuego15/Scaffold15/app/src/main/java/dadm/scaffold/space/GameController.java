@@ -22,12 +22,12 @@ public class GameController extends GameObject {
     private List<PowerUp> powerUpPool = new ArrayList<PowerUp>();
     private List<StarScore> starsPool = new ArrayList<StarScore>();
     private EndLevelObject endLevel;
-    private boolean endLevelCreated = false;
 
     private int asteroidsSpawned;
     private int enemyShipsSpawned;
     private int powerUpsSpawned;
     private int starsSpawned;
+    private boolean endLevelCreated = false;
 
     public GameController(GameEngine gameEngine) {
         // We initialize the pool of items now (enemies and power ups)

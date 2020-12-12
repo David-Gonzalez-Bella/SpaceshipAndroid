@@ -20,7 +20,7 @@ public final class SoundManager {
 	
 	private Context context;
 	private SoundPool soundPool;
-	public static MediaPlayer bgPlayer;
+	public MediaPlayer bgPlayer;
 
 	public SoundManager(Context context) {
 		this.context = context;
@@ -63,7 +63,7 @@ public final class SoundManager {
 		try {
 			// Important to not reuse it. It can be on a strange state
 			bgPlayer = new MediaPlayer();
-			AssetFileDescriptor afd = context.getAssets().openFd("sfx/Riccardo_Colombo_-_11_-_Something_mental.mp3");
+			AssetFileDescriptor afd = context.getAssets().openFd("sfx/MainTheme.wav");
 			bgPlayer.setDataSource(afd.getFileDescriptor(),
 					afd.getStartOffset(), afd.getLength());
 			bgPlayer.setLooping(true);
@@ -89,6 +89,20 @@ public final class SoundManager {
 					.setAudioAttributes(audioAttributes)
 					.setMaxStreams(MAX_STREAMS)
 					.build();
+		}
+	}
+
+	public void changeTheme(String newFileName) {
+		try {
+			AssetFileDescriptor afd = context.getAssets().openFd(newFileName);
+			bgPlayer.setDataSource(afd.getFileDescriptor(),
+					afd.getStartOffset(), afd.getLength());
+			bgPlayer.setLooping(true);
+			bgPlayer.setVolume(DEFAULT_MUSIC_VOLUME, DEFAULT_MUSIC_VOLUME);
+			bgPlayer.prepare();
+			bgPlayer.start();
+		}catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

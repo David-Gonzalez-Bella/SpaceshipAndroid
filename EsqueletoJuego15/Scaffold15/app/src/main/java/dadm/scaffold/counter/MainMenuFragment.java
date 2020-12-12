@@ -38,6 +38,7 @@ public class MainMenuFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         view.findViewById(R.id.btn_start).setOnClickListener(this);
         view.findViewById(R.id.kakugamesLogo).setOnClickListener(this);
         view.findViewById(R.id.sainnyLogo).setOnClickListener(this);

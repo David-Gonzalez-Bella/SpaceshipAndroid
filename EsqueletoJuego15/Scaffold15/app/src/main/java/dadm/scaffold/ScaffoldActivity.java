@@ -60,13 +60,13 @@ public class ScaffoldActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SoundManager.bgPlayer.pause();
+        getSoundManager().bgPlayer.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SoundManager.bgPlayer.start();
+        getSoundManager().bgPlayer.start();
     }
 
     @Override
