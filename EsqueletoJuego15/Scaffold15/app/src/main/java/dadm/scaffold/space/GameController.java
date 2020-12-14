@@ -14,7 +14,7 @@ public class GameController extends GameObject {
     private static final int TIME_BETWEEN_ENEMY_SHIPS = 7000;
     private static final int TIME_BETWEEN_POWER_UPS = 15000;
     private static final int TIME_BETWEEN_STARS = 5000;
-    private static final long TIME_END_LEVEL_PORTAL = 60000;
+    private static final long TIME_END_LEVEL_PORTAL = 10000;
     private long currentMillis;
 
     private List<Asteroid> asteroidPool = new ArrayList<Asteroid>();

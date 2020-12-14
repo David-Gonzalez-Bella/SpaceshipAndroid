@@ -11,7 +11,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".ScaffoldActivity"
             android:screenOrientation="sensorLandscape"
-            android:label="@string/title_activity_main">
+            android:label="Galaxy Destroyer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
