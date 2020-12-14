@@ -1,5 +1,6 @@
 package dadm.scaffold.engine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,13 +21,13 @@ public class GUI extends GameObject {
 
     private String framesPerSecondText = "";
 
-    public GUI(GameEngine gameEngine, Context context) {
+    public GUI(GameEngine gameEngine, Activity context) {
         paint = new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
         textHeight = (float) (25 * gameEngine.pixelFactor);
         textWidth = (float) (50 * gameEngine.pixelFactor);
         paint.setTextSize(textHeight / 2);
-        paint.setTypeface(Typeface.createFromAsset(context.getAssets(), "assets/fonts/bubblegum_sans.ttf"));
+        paint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/bubblegum_sans.ttf"));
     }
 
     @Override
