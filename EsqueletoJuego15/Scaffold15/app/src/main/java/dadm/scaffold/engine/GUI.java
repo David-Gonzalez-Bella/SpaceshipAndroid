@@ -1,8 +1,10 @@
 package dadm.scaffold.engine;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import dadm.scaffold.space.SpaceShipPlayer;
 
@@ -18,12 +20,13 @@ public class GUI extends GameObject {
 
     private String framesPerSecondText = "";
 
-    public GUI(GameEngine gameEngine) {
+    public GUI(GameEngine gameEngine, Context context) {
         paint = new Paint();
         paint.setTextAlign(Paint.Align.CENTER);
         textHeight = (float) (25 * gameEngine.pixelFactor);
         textWidth = (float) (50 * gameEngine.pixelFactor);
         paint.setTextSize(textHeight / 2);
+        paint.setTypeface(Typeface.createFromAsset(context.getAssets(), "assets/fonts/bubblegum_sans.ttf"));
     }
 
     @Override

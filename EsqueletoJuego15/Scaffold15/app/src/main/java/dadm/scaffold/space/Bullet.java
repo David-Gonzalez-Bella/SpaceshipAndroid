@@ -32,9 +32,12 @@ public class Bullet extends Sprite {
     }
 
     public void init(ShootingObject parentPlayer, double initPositionX, double initPositionY) {
-        positionX = initPositionX - width/2;
-        positionY = initPositionY - height/2;
         parent = parentPlayer;
+        positionX = initPositionX - width/2;
+        if (parent instanceof SpaceShipPlayer)
+            positionY = initPositionY - height/2 - 40;
+        else
+            positionY = initPositionY + height/2 + 40;
     }
 
     protected void removeObject(GameEngine gameEngine) {

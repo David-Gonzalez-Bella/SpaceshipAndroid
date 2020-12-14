@@ -28,7 +28,7 @@ public class SpaceShipEnemy extends FallingObject implements ShootingObject{
 
     private void initBulletPool(GameEngine gameEngine) {
         for (int i = 0; i < BULLET_POOL_AMOUNT; i++) {
-            bullets.add(new Bullet(gameEngine, R.drawable.bullet));
+            bullets.add(new Bullet(gameEngine, R.drawable.bullet_enemy));
         }
     }
 

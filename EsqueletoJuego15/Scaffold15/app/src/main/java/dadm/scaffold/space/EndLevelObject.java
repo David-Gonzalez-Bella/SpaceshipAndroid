@@ -6,7 +6,7 @@ import dadm.scaffold.engine.GameEngine;
 public class EndLevelObject extends FallingObject{
 
     public EndLevelObject(GameController gameController, GameEngine gameEngine) {
-        super(gameController, gameEngine, R.drawable.robot, 100d);
+        super(gameController, gameEngine, R.drawable.portal, 100d);
     }
 
     public void init(GameEngine gameEngine) {
